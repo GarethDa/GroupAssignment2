@@ -96,7 +96,7 @@ public class TpMovement : MonoBehaviour
 
         
 
-        Debug.Log(Mathf.Sqrt(Mathf.Pow(rBody.velocity.x, 2) + Mathf.Pow(rBody.velocity.z, 2)));
+        //Debug.Log(Mathf.Sqrt(Mathf.Pow(rBody.velocity.x, 2) + Mathf.Pow(rBody.velocity.z, 2)));
         
         /*
         if (!isGrounded)

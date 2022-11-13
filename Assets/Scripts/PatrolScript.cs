@@ -212,8 +212,6 @@ public class PatrolScript : MonoBehaviour
         //Start Tracking Player
         if(other.tag == "Player" && currentCooldown < 0 && trackedPlayer != other.gameObject)
         {
-            Debug.Log("White Woman Detected");
-            
             //Set tracking to true and grab the player to track
             trackingPlayer = true;
             trackedPlayer = other.gameObject;
