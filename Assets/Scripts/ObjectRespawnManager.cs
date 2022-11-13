@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Profiling;
 
 public class ObjectRespawnManager : MonoBehaviour
 {
+    /*
     [Serializable]
     private struct ObjectRespawnType
     {
@@ -14,44 +16,45 @@ public class ObjectRespawnManager : MonoBehaviour
 
         public Material origMat;
     }
+    */
 
-    [SerializeField] private List<ObjectRespawnType> respawnObjects = new List<ObjectRespawnType>();
+    //[SerializeField] private List<ObjectRespawnType> respawnObjects = new List<ObjectRespawnType>();
+
+    public List<Transform> spawnPoints;
+
+    ObjectPool poolInstance;
+
+    float spawnTimer = 0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        /*
-        //To start, transfer all of the transforms in each object type's spawn point list to a queue,
-        //since a queue is more useful for what we want
-        foreach (ObjectRespawnType objectType in respawnObjects)
-        {
-            //objectType.spawnQueue = new Queue<Transform>();
-
-            foreach(Transform spawnPoint in objectType.spawnPoints)
-            {
-                Debug.Log(objectType.spawnQueue);
-
-                //objectType.spawnQueue.Enqueue(spawnPoint);
-            }
-        }
-
-        for (int i = 0; i < respawnObjects.Count; i++)
-        {
-            //respawnObjects[i].spawnPoints = new List<Transform>();
-        }
-        */
+        poolInstance = ObjectPool.poolManager;
     }
-
-
 
     // Update is called once per frame
     void Update()
     {
+        spawnTimer += Time.deltaTime;
+
+        //if (spawnTimer >= .05f )
         
+        {
+            Profiler.BeginSample("Pooling");
+            poolInstance.SpawnFromPool("Dodgeball", spawnPoints[0].transform.position, true);
+
+            spawnPoints.Add(spawnPoints[0]);
+            spawnPoints.RemoveAt(0);
+
+            spawnTimer = 0f;
+
+            Profiler.EndSample();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        /*
         foreach (ObjectRespawnType objectType in respawnObjects)
         {
             if (other.gameObject.tag.Equals(objectType.objectTag))
@@ -82,6 +85,23 @@ public class ObjectRespawnManager : MonoBehaviour
                 break;
             }
         }
+        */
+
+        other.gameObject.SetActive(false);
+
+        /*
+        Profiler.BeginSample("Ball instantiate");
+        GameObject obj = Instantiate(other.gameObject);
+
+        obj.transform.position = spawnPoints[0].transform.position;
+
+        Destroy(other.gameObject);
+
+        spawnPoints.Add(spawnPoints[0]);
+        spawnPoints.RemoveAt(0);
+
+        Profiler.EndSample();
+        */
     }
 
     /*
