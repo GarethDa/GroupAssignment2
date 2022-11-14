@@ -37,11 +37,10 @@ public class ObjectRespawnManager : MonoBehaviour
     {
         spawnTimer += Time.deltaTime;
 
-        //if (spawnTimer >= .05f )
-        
+        if (spawnTimer >= 7.0f )
         {
             Profiler.BeginSample("Pooling");
-            poolInstance.SpawnFromPool("Dodgeball", spawnPoints[0].transform.position, true);
+            poolInstance.SpawnFromPool("Dodgeball", spawnPoints[0].transform.position, false);
 
             spawnPoints.Add(spawnPoints[0]);
             spawnPoints.RemoveAt(0);
@@ -50,6 +49,7 @@ public class ObjectRespawnManager : MonoBehaviour
 
             Profiler.EndSample();
         }
+        
     }
 
     private void OnTriggerEnter(Collider other)
